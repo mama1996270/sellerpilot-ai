@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mama1996270.github.io/sellerpilot-ai/sitemap.xml
