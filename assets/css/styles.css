@@ -938,7 +938,7 @@ body.nav-open .nav-toggle .icon-close {
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   align-items: stretch;
 }
@@ -1331,6 +1331,512 @@ body.nav-open .nav-toggle .icon-close {
 }
 
 /* =========================================================================
+   App pages — auth, account, checkout, orders/invoices
+   Same tokens/radii/surfaces as the marketing site; these are the only new
+   component classes added for the commerce/account area. No parallel button
+   or card system — everything below composes .btn / .section / var(--*).
+   ========================================================================= */
+
+/* ---- Narrow form pages (login / register) ---- */
+.auth-page {
+  padding: clamp(48px, 6vw, 88px) 0 96px;
+}
+
+.auth-page .container {
+  max-width: 440px;
+}
+
+.auth-page h1 {
+  font-size: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.auth-page .doc-updated {
+  margin-top: 10px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+.auth-card {
+  margin-top: 32px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(24px, 3vw, 32px);
+  background: var(--surface);
+}
+
+.auth-switch {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.auth-switch a {
+  color: var(--accent-hover);
+  font-weight: 600;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Form fields (shared by auth + any future form) ---- */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: 18px;
+}
+
+.form-field label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="password"] {
+  height: 46px;
+  width: 100%;
+  padding: 0 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 15px;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+}
+
+.form-field input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-field input:hover {
+  border-color: var(--border-strong);
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  background: var(--surface);
+}
+
+.form-field .field-hint {
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.form-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.form-check input {
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: var(--accent);
+}
+
+.form-actions {
+  margin-top: 4px;
+}
+
+/* Inline form feedback - never rely on color alone, each state has its own
+   icon-free but explicitly-worded text, this is just the color treatment. */
+.form-message {
+  display: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin-bottom: 18px;
+}
+
+.form-message.is-visible {
+  display: block;
+}
+
+.form-message--error {
+  color: #ffb4bd;
+  background: rgba(240, 87, 107, 0.12);
+  border: 1px solid rgba(240, 87, 107, 0.35);
+}
+
+.form-message--success {
+  color: var(--success);
+  background: var(--success-soft);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.form-message--info {
+  color: var(--accent-hover);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+}
+
+/* ---- Generic "not configured / degraded state" panel ----
+   Used whenever Supabase isn't configured yet, or a lookup fails - shown
+   instead of fake data, never as a silent blank area. */
+.notice-panel {
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.notice-panel h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.notice-panel p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.notice-panel .btn {
+  margin-top: 18px;
+}
+
+.notice-panel.is-warning {
+  border-color: rgba(242, 184, 75, 0.35);
+  background: var(--gold-soft);
+}
+
+/* ---- Small inline spinner (checkout mock-pay buttons, polling states) ---- */
+.spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 7, 11, 0.3);
+  border-top-color: currentColor;
+  animation: spp-spin 0.7s linear infinite;
+  flex: none;
+}
+
+.btn-secondary .spinner,
+.btn-ghost .spinner {
+  border-color: rgba(244, 245, 248, 0.25);
+  border-top-color: currentColor;
+}
+
+@keyframes spp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Status badges (subscription / order / invoice states) ---- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.status-badge--active,
+.status-badge--paid,
+.status-badge--success,
+.status-badge--trialing {
+  color: var(--success);
+  background: var(--success-soft);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+}
+
+.status-badge--pending,
+.status-badge--processing {
+  color: var(--gold);
+  background: var(--gold-soft);
+  border: 1px solid rgba(242, 184, 75, 0.35);
+}
+
+.status-badge--failed,
+.status-badge--cancelled,
+.status-badge--expired,
+.status-badge--past_due {
+  color: #f0576b;
+  background: rgba(240, 87, 107, 0.12);
+  border: 1px solid rgba(240, 87, 107, 0.35);
+}
+
+.status-badge--free {
+  color: var(--text-muted);
+  background: var(--surface-hover);
+  border: 1px solid var(--border-strong);
+}
+
+/* ---- Account dashboard ---- */
+.dash-page {
+  padding: clamp(48px, 6vw, 88px) 0 96px;
+}
+
+.dash-page .container {
+  max-width: 880px;
+}
+
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.dash-head h1 {
+  font-size: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.dash-head p {
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.dash-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  background: var(--surface);
+}
+
+.dash-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.dash-card .dash-card-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.dash-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.dash-row:last-child {
+  border-bottom: none;
+}
+
+.dash-row .label {
+  color: var(--text-muted);
+}
+
+.dash-row .value {
+  color: var(--text-primary);
+  font-weight: 600;
+  text-align: right;
+}
+
+.dash-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.dash-full {
+  grid-column: 1 / -1;
+}
+
+/* ---- Checkout page ---- */
+.checkout-page .container {
+  max-width: 560px;
+}
+
+.checkout-summary {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+  background: var(--surface);
+}
+
+.checkout-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14.5px;
+  color: var(--text-secondary);
+}
+
+.checkout-line:last-child {
+  border-bottom: none;
+}
+
+.checkout-line .value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.checkout-total-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border-strong);
+}
+
+.checkout-total-line .total-amount {
+  font-family: var(--font-mono);
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.checkout-terms {
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.dev-mode-panel {
+  margin-top: 24px;
+  border: 1px dashed var(--accent-border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  background: var(--accent-soft);
+}
+
+.dev-mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-hover);
+  background: rgba(79, 127, 255, 0.16);
+  border: 1px solid var(--accent-border);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+}
+
+.dev-mode-panel p {
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.dev-mode-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* ---- Data tables (orders / invoices) ---- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 560px;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table td.is-primary {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 56px 24px;
+  color: var(--text-muted);
+  font-size: 14.5px;
+}
+
+/* ---- Polling / async state line (payment-success) ---- */
+.status-poll {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 18px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* =========================================================================
    Responsive
    ========================================================================= */
 
@@ -1351,12 +1857,12 @@ body.nav-open .nav-toggle .icon-close {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .price-card--featured {
-    grid-column: span 2;
-  }
-
   .footer-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .dash-grid {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -1453,6 +1959,11 @@ body.nav-open .nav-toggle .icon-close {
 
   .mockup-body {
     grid-template-columns: 76px 1fr;
+  }
+
+  .dash-head {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

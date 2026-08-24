@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Payment Successful — SellerPilot AI Pro</title>
+<meta name="description" content="Your SellerPilot AI Pro payment was received." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/payment-success.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="index.html">Back to Home</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="auth-page">
+    <div class="container">
+      <div id="js-not-configured" class="notice-panel is-warning" hidden>
+        <h3>Accounts are not connected yet</h3>
+        <p>This site isn't wired up to a live Supabase project yet.</p>
+        <a class="btn btn-secondary" href="index.html">Back to Home</a>
+      </div>
+
+      <div id="js-success-content" hidden>
+        <h1>Payment successful</h1>
+        <div class="auth-card" style="text-align:center;">
+          <div class="checkout-summary" style="margin-top:0;">
+            <div class="checkout-line"><span>Plan</span><span class="value" id="js-order-plan">—</span></div>
+            <div class="checkout-line"><span>Amount</span><span class="value" id="js-order-amount">—</span></div>
+          </div>
+          <p id="js-activation-line" class="status-poll">
+            <span class="spinner" aria-hidden="true"></span>
+            <span id="js-activation-text">Your subscription is being activated…</span>
+          </p>
+          <div class="dash-actions">
+            <a class="btn btn-primary" href="account.html">Go to Account</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var PLAN_LABELS = { starter: "Starter", pro: "Pro", business: "Business" };
+  var MAX_ATTEMPTS = 8;
+  var POLL_INTERVAL_MS = 1500;
+
+  function formatAmount(cents, currency) {
+    var n = Number(cents);
+    if (isNaN(n)) return "—";
+    return (n / 100).toLocaleString(undefined, { style: "currency", currency: currency || "EUR" });
+  }
+
+  async function pollEntitlement(attempt) {
+    var activationLine = document.getElementById("js-activation-line");
+    var activationText = document.getElementById("js-activation-text");
+
+    var result;
+    try {
+      result = await window.SellerPilotAuth.callFunction("get-entitlement", { method: "GET" });
+    } catch (err) {
+      result = null;
+    }
+
+    var entitlement = result && result.ok ? result.data : null;
+    // Must match the backend's own ENTITLED_STATUSES set exactly
+    // (supabase/functions/_shared/entitlement.ts) - "active"/"trialing" alone
+    // would under-report a legitimately-entitled "past_due" subscription.
+    var isActive = entitlement && entitlement.plan !== "free" && ["active", "trialing", "past_due"].indexOf(entitlement.status) !== -1;
+
+    if (isActive) {
+      var planLabel = PLAN_LABELS[entitlement.plan] || entitlement.plan;
+      activationLine.querySelector(".spinner").remove();
+      activationText.textContent = "Your " + planLabel + " subscription is active.";
+      return;
+    }
+
+    if (attempt >= MAX_ATTEMPTS) {
+      var spinnerEl = activationLine.querySelector(".spinner");
+      if (spinnerEl) spinnerEl.remove();
+      activationText.textContent =
+        "Activation is taking longer than expected. Check your Account page in a moment.";
+      return;
+    }
+
+    window.setTimeout(function () {
+      pollEntitlement(attempt + 1);
+    }, POLL_INTERVAL_MS);
+  }
+
+  async function init() {
+    if (!window.SellerPilotAuth || !window.SellerPilotAuth.isConfigured()) {
+      document.getElementById("js-not-configured").hidden = false;
+      return;
+    }
+
+    var authState = await window.SellerPilotAuth.requireAuth();
+    if (!authState.session) return; // already redirected to login
+
+    var params = new URLSearchParams(window.location.search);
+    var plan = params.get("order_plan");
+    var amount = params.get("order_amount");
+    var currency = params.get("order_currency");
+
+    document.getElementById("js-order-plan").textContent = plan ? (PLAN_LABELS[plan] || plan) : "—";
+    document.getElementById("js-order-amount").textContent = amount ? formatAmount(amount, currency) : "—";
+
+    document.getElementById("js-success-content").hidden = false;
+    pollEntitlement(1);
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

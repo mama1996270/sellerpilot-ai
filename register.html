@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create Account — SellerPilot AI Pro</title>
+<meta name="description" content="Create a SellerPilot AI Pro account to manage billing, subscriptions and invoices." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/register.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="index.html">Back to Home</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="auth-page">
+    <div class="container">
+      <h1>Create your account</h1>
+      <p class="doc-updated">Needed for paid plans and billing — the free trial itself doesn't require one.</p>
+
+      <div class="auth-card">
+        <div id="js-not-configured" class="notice-panel is-warning" hidden>
+          <h3>Accounts are not connected yet</h3>
+          <p>This site isn't wired up to a live Supabase project yet, so account creation doesn't work here. The 7-day trial doesn't need an account — you can start it from the download page.</p>
+          <a class="btn btn-secondary" href="download.html">Go to Download</a>
+        </div>
+
+        <form id="js-register-form" novalidate>
+          <div id="js-form-message" class="form-message form-message--error" role="alert"></div>
+          <div id="js-confirm-message" class="form-message form-message--success" role="status"></div>
+
+          <div class="form-field">
+            <label for="full-name">Full name</label>
+            <input type="text" id="full-name" name="full-name" autocomplete="name" required />
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required />
+          </div>
+
+          <div class="form-field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" required />
+            <span class="field-hint">At least 8 characters.</span>
+          </div>
+
+          <div class="form-field">
+            <label for="confirm-password">Confirm password</label>
+            <input type="password" id="confirm-password" name="confirm-password" autocomplete="new-password" required />
+          </div>
+
+          <label class="form-check">
+            <input type="checkbox" id="terms" required />
+            <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</span>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-block" id="js-submit">
+              <span class="js-btn-label">Create account</span>
+            </button>
+          </div>
+        </form>
+
+        <p class="auth-switch" id="js-switch-line">Already have an account? <a href="login.html">Sign in</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+  var form = document.getElementById("js-register-form");
+  var notConfigured = document.getElementById("js-not-configured");
+  var errorEl = document.getElementById("js-form-message");
+  var confirmEl = document.getElementById("js-confirm-message");
+  var switchLine = document.getElementById("js-switch-line");
+  var submitBtn = document.getElementById("js-submit");
+  var btnLabel = submitBtn.querySelector(".js-btn-label");
+
+  function showError(text) {
+    confirmEl.classList.remove("is-visible");
+    errorEl.textContent = text;
+    errorEl.classList.add("is-visible");
+  }
+
+  function showConfirmNotice(text) {
+    errorEl.classList.remove("is-visible");
+    confirmEl.textContent = text;
+    confirmEl.classList.add("is-visible");
+  }
+
+  if (!window.SellerPilotAuth || !window.SellerPilotAuth.isConfigured()) {
+    form.hidden = true;
+    notConfigured.hidden = false;
+    return;
+  }
+
+  window.SellerPilotAuth.getSession().then(function (session) {
+    if (session) window.location.href = "account.html";
+  });
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    errorEl.classList.remove("is-visible");
+    confirmEl.classList.remove("is-visible");
+
+    var fullName = document.getElementById("full-name").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+    var termsChecked = document.getElementById("terms").checked;
+
+    if (!fullName || !email || !password || !confirmPassword) {
+      showError("Fill in every field.");
+      return;
+    }
+    if (password.length < 8) {
+      showError("Password must be at least 8 characters.");
+      return;
+    }
+    if (password !== confirmPassword) {
+      showError("Passwords don't match.");
+      return;
+    }
+    if (!termsChecked) {
+      showError("You need to agree to the Terms of Service and Privacy Policy.");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    btnLabel.textContent = "Creating account…";
+
+    window.SellerPilotAuth.signUp(email, password, fullName).then(function (result) {
+      submitBtn.disabled = false;
+      btnLabel.textContent = "Create account";
+
+      if (result.error) {
+        showError(result.error.message || "Could not create your account.");
+        return;
+      }
+
+      // Supabase returns a session immediately if email confirmation is
+      // disabled for the project; otherwise session is null and the user
+      // must confirm via email first. Handle both — never assume one.
+      var session = result.data && result.data.session;
+      if (session) {
+        window.location.href = "account.html";
+        return;
+      }
+
+      form.hidden = true;
+      switchLine.hidden = true;
+      showConfirmNotice("Account created. Check your email to confirm your address before signing in.");
+    });
+  });
+})();
+</script>
+</body>
+</html>

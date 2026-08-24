@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Checkout — SellerPilot AI Pro</title>
+<meta name="description" content="Complete your SellerPilot AI Pro subscription checkout." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/checkout.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="index.html">Back to Home</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="auth-page checkout-page">
+    <div class="container">
+      <h1>Checkout</h1>
+      <p class="doc-updated" id="js-checkout-sub">&nbsp;</p>
+
+      <div id="js-not-configured" class="notice-panel is-warning" hidden>
+        <h3>Accounts are not connected yet</h3>
+        <p>This site isn't wired up to a live Supabase project yet, so checkout doesn't work here.</p>
+        <a class="btn btn-secondary" href="index.html#pricing">Back to Pricing</a>
+      </div>
+
+      <div id="js-no-token" class="notice-panel is-warning" hidden>
+        <h3>Missing checkout link</h3>
+        <p>This page needs a checkout token in the URL (e.g. <code>checkout.html?token=...</code>). Start a checkout from the pricing section instead.</p>
+        <a class="btn btn-secondary" href="index.html#pricing">Back to Pricing</a>
+      </div>
+
+      <div id="js-loading" class="notice-panel" hidden>
+        <h3>Loading checkout…</h3>
+      </div>
+
+      <div id="js-redirecting" class="notice-panel" hidden>
+        <h3>Redirecting to PayPal…</h3>
+        <p>You're being sent to PayPal to complete your subscription securely. If nothing happens, <a id="js-redirect-link" href="#">click here</a>.</p>
+      </div>
+
+      <div id="js-invalid" class="notice-panel is-warning" hidden>
+        <h3>This checkout link is invalid or has expired</h3>
+        <p>Start a new checkout from the pricing section.</p>
+        <a class="btn btn-secondary" href="index.html#pricing">Back to Pricing</a>
+      </div>
+
+      <div id="js-status-state" class="notice-panel" hidden>
+        <h3 id="js-status-title">—</h3>
+        <p id="js-status-body">&nbsp;</p>
+        <a class="btn btn-secondary" href="index.html#pricing">Back to Pricing</a>
+      </div>
+
+      <div id="js-checkout-content" hidden>
+        <div class="checkout-summary">
+          <div class="checkout-line"><span>Plan</span><span class="value" id="js-plan-name">—</span></div>
+          <div class="checkout-line"><span>Billing cycle</span><span class="value" id="js-billing-cycle">—</span></div>
+          <div class="checkout-line"><span>Account</span><span class="value" id="js-account-email">—</span></div>
+          <div class="checkout-total-line">
+            <span>Total due today</span>
+            <span class="total-amount" id="js-total-amount">—</span>
+          </div>
+          <p class="checkout-terms">By continuing you agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and <a href="refund.html" target="_blank" rel="noopener">Refund Policy</a>.</p>
+        </div>
+
+        <div id="js-mock-panel" class="dev-mode-panel" hidden>
+          <span class="dev-mode-badge">Development / Test Mode</span>
+          <p>No real payment provider is connected. These buttons simulate a payment outcome so the rest of the flow can be tested end-to-end.</p>
+          <div class="dev-mode-actions">
+            <button class="btn btn-primary btn-block" id="js-sim-success" data-outcome="success">Simulate Successful Payment</button>
+            <button class="btn btn-secondary btn-block" id="js-sim-failure" data-outcome="failure">Simulate Failed Payment</button>
+            <button class="btn btn-ghost btn-block" id="js-sim-cancel" data-outcome="cancel">Simulate Cancelled Payment</button>
+          </div>
+        </div>
+
+        <div id="js-mock-disabled" class="notice-panel" hidden style="margin-top:24px;">
+          <p>Payments are currently being configured.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var PLAN_LABELS = { starter: "Starter", pro: "Pro", business: "Business" };
+  var STATUS_COPY = {
+    paid: { title: "This checkout has already been completed.", body: "The order was already paid. No further action is needed." },
+    failed: { title: "This checkout attempt failed.", body: "Start a new checkout from the pricing section to try again." },
+    cancelled: { title: "This checkout was cancelled.", body: "Start a new checkout from the pricing section if you'd like to try again." },
+    expired: { title: "This checkout link has expired.", body: "Checkout links are valid for a limited time. Start a new one from the pricing section." },
+  };
+
+  function show(id) {
+    document.getElementById(id).hidden = false;
+  }
+
+  function formatAmount(cents, currency) {
+    return (cents / 100).toLocaleString(undefined, { style: "currency", currency: currency || "EUR" });
+  }
+
+  function setButtonsBusy(busy) {
+    ["js-sim-success", "js-sim-failure", "js-sim-cancel"].forEach(function (id) {
+      var btn = document.getElementById(id);
+      btn.disabled = busy;
+    });
+  }
+
+  async function runSimulation(token, outcome, btn) {
+    setButtonsBusy(true);
+    var originalHTML = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner" aria-hidden="true"></span> Processing…';
+
+    try {
+      var result = await window.SellerPilotAuth.callFunction("checkout-pay-mock", {
+        method: "POST",
+        body: { checkout_token: token, simulate: outcome },
+      });
+
+      if (!result.ok || !result.data || !result.data.order) {
+        setButtonsBusy(false);
+        btn.innerHTML = originalHTML;
+        if (result.status === 403) {
+          document.getElementById("js-mock-panel").hidden = true;
+          show("js-mock-disabled");
+        } else {
+          window.alert("Could not process the simulated payment. Try again.");
+        }
+        return;
+      }
+
+      var order = result.data.order;
+      if (order.status === "paid") {
+        window.location.href =
+          "payment-success.html?order_plan=" + encodeURIComponent(order.plan) +
+          "&order_amount=" + encodeURIComponent(order.amount_cents) +
+          "&order_currency=" + encodeURIComponent(order.currency);
+      } else if (order.status === "cancelled") {
+        window.location.href = "payment-cancelled.html";
+      } else {
+        window.location.href = "payment-cancelled.html?reason=failed";
+      }
+    } catch (err) {
+      setButtonsBusy(false);
+      btn.innerHTML = originalHTML;
+      window.alert("Could not process the simulated payment. Try again.");
+    }
+  }
+
+  /**
+   * Builds the payment-success.html URL for a given checkout, reusing the
+   * EXACT query-param shape (order_plan/order_amount/order_currency) the
+   * mock flow already uses to reach that page (see runSimulation() above).
+   * That page's own polling against get-entitlement is the ONLY thing that
+   * ever confirms activation - these params are display-only there, same as
+   * for the mock flow, so no new activation mechanism is introduced.
+   */
+  function successRedirectUrl(checkout) {
+    return "payment-success.html?order_plan=" + encodeURIComponent(checkout.plan) +
+      "&order_amount=" + encodeURIComponent(checkout.amount_cents) +
+      "&order_currency=" + encodeURIComponent(checkout.currency);
+  }
+
+  async function init() {
+    if (!window.SellerPilotAuth || !window.SellerPilotAuth.isConfigured()) {
+      show("js-not-configured");
+      return;
+    }
+
+    var token = new URLSearchParams(window.location.search).get("token");
+    if (!token) {
+      show("js-no-token");
+      return;
+    }
+
+    // Return leg from PayPal's approval page (return_url/cancel_url, set by
+    // PayPalProvider.createCheckout() to point back here with &paypal=...).
+    // This value is used ONLY to decide where to send the browser next -
+    // it is never treated as proof of payment. The real outcome always
+    // comes from get-entitlement, verified server-side from the PayPal
+    // webhook -> subscriptions pipeline, which is exactly what
+    // payment-success.html's own polling (unchanged, reused as-is) checks.
+    var paypalReturn = new URLSearchParams(window.location.search).get("paypal");
+
+    var authState = await window.SellerPilotAuth.requireAuth();
+    if (!authState.session) return; // already redirected to login
+
+    show("js-loading");
+
+    var result;
+    try {
+      result = await window.SellerPilotAuth.callFunction("get-checkout", { method: "GET", query: { token: token } });
+    } catch (err) {
+      document.getElementById("js-loading").hidden = true;
+      show("js-invalid");
+      return;
+    }
+
+    document.getElementById("js-loading").hidden = true;
+
+    if (!result.ok || !result.data || result.data.error) {
+      show("js-invalid");
+      return;
+    }
+
+    var checkout = result.data;
+
+    if (paypalReturn === "success") {
+      // Never activate here and never trust this redirect itself - just
+      // forward to the page that actually verifies the outcome.
+      window.location.href = successRedirectUrl(checkout);
+      return;
+    }
+    if (paypalReturn === "cancel") {
+      window.location.href = "payment-cancelled.html";
+      return;
+    }
+
+    document.getElementById("js-checkout-sub").textContent = "Review your plan and confirm.";
+    document.getElementById("js-plan-name").textContent = PLAN_LABELS[checkout.plan] || checkout.plan;
+    document.getElementById("js-billing-cycle").textContent = checkout.billing_cycle === "yearly" ? "Yearly" : "Monthly";
+    document.getElementById("js-account-email").textContent = authState.session.user.email || "—";
+    document.getElementById("js-total-amount").textContent = formatAmount(checkout.amount_cents, checkout.currency);
+
+    if (checkout.status !== "pending") {
+      var copy = STATUS_COPY[checkout.status] || STATUS_COPY.expired;
+      document.getElementById("js-status-title").textContent = copy.title;
+      document.getElementById("js-status-body").textContent = copy.body;
+      show("js-status-state");
+      return;
+    }
+
+    if (checkout.approval_url) {
+      // A real provider (PayPal) already created its own hosted checkout for
+      // this session - send the customer straight there instead of ever
+      // showing the mock panel. This is a forward redirect to begin payment,
+      // not a confirmation of anything.
+      document.getElementById("js-redirect-link").href = checkout.approval_url;
+      show("js-redirecting");
+      window.location.href = checkout.approval_url;
+      return;
+    }
+
+    show("js-checkout-content");
+
+    if (checkout.mock_payments_enabled) {
+      show("js-mock-panel");
+      document.getElementById("js-sim-success").addEventListener("click", function () {
+        runSimulation(token, "success", this);
+      });
+      document.getElementById("js-sim-failure").addEventListener("click", function () {
+        runSimulation(token, "failure", this);
+      });
+      document.getElementById("js-sim-cancel").addEventListener("click", function () {
+        runSimulation(token, "cancel", this);
+      });
+    } else {
+      show("js-mock-disabled");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

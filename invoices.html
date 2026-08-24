@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Invoices — SellerPilot AI Pro</title>
+<meta name="description" content="View your SellerPilot AI Pro invoice history." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/invoices.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="index.html">Back to Home</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="dash-page">
+    <div class="container">
+      <div id="js-not-configured" class="notice-panel is-warning" hidden>
+        <h3>Accounts are not connected yet</h3>
+        <p>This site isn't wired up to a live Supabase project yet, so there's no invoice history to show.</p>
+        <a class="btn btn-secondary" href="account.html">Back to Account</a>
+      </div>
+
+      <div id="js-content" hidden>
+        <div class="dash-head">
+          <div>
+            <h1>Invoices</h1>
+            <p>Billing records for your account, most recent first. Display only — no downloadable PDF yet.</p>
+          </div>
+          <a class="btn btn-secondary btn-sm" href="account.html">Back to Account</a>
+        </div>
+
+        <div id="js-loading" class="notice-panel"><h3>Loading invoices…</h3></div>
+        <div id="js-error" class="notice-panel is-warning" hidden><p>Could not load your invoices. Try again later.</p></div>
+        <div id="js-empty" class="table-wrap" hidden><p class="empty-state">No invoices yet. Invoices appear here once a subscription payment is recorded.</p></div>
+
+        <div id="js-table-wrap" class="table-wrap" hidden>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Plan</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Issued</th>
+                <th>Paid</th>
+              </tr>
+            </thead>
+            <tbody id="js-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var PLAN_LABELS = { free: "Free", starter: "Starter", pro: "Pro", business: "Business" };
+
+  function formatAmount(cents, currency) {
+    return (cents / 100).toLocaleString(undefined, { style: "currency", currency: currency || "EUR" });
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function init() {
+    if (!window.SellerPilotAuth || !window.SellerPilotAuth.isConfigured()) {
+      document.getElementById("js-not-configured").hidden = false;
+      return;
+    }
+
+    var authState = await window.SellerPilotAuth.requireAuth();
+    if (!authState.session) return; // already redirected to login
+
+    document.getElementById("js-content").hidden = false;
+
+    var client = window.SellerPilotAuth.getClient();
+    var loading = document.getElementById("js-loading");
+    var errorEl = document.getElementById("js-error");
+    var emptyEl = document.getElementById("js-empty");
+    var tableWrap = document.getElementById("js-table-wrap");
+    var tbody = document.getElementById("js-table-body");
+
+    try {
+      // RLS (auth.uid() = user_id) restricts this query to the signed-in
+      // user's own rows at the database layer — no extra filter needed here.
+      var result = await client
+        .from("invoices")
+        .select("invoice_number, plan, amount_cents, currency, status, issued_at, paid_at")
+        .order("issued_at", { ascending: false });
+
+      loading.hidden = true;
+
+      if (result.error) {
+        errorEl.hidden = false;
+        return;
+      }
+
+      var rows = result.data || [];
+      if (rows.length === 0) {
+        emptyEl.hidden = false;
+        return;
+      }
+
+      tbody.innerHTML = rows
+        .map(function (row) {
+          return (
+            "<tr>" +
+            '<td class="is-primary">' + escapeHtml(row.invoice_number) + "</td>" +
+            "<td>" + escapeHtml(PLAN_LABELS[row.plan] || row.plan) + "</td>" +
+            "<td>" + formatAmount(row.amount_cents, row.currency) + "</td>" +
+            '<td><span class="status-badge status-badge--' + escapeHtml(row.status) + '">' + escapeHtml(row.status) + "</span></td>" +
+            "<td>" + formatDate(row.issued_at) + "</td>" +
+            "<td>" + formatDate(row.paid_at) + "</td>" +
+            "</tr>"
+          );
+        })
+        .join("");
+      tableWrap.hidden = false;
+    } catch (err) {
+      loading.hidden = true;
+      errorEl.hidden = false;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

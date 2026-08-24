@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Your Account — SellerPilot AI Pro</title>
+<meta name="description" content="Manage your SellerPilot AI Pro account, subscription and billing." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/account.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="index.html">Back to Home</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="dash-page">
+    <div class="container">
+      <div id="js-not-configured" class="notice-panel is-warning" hidden>
+        <h3>Accounts are not connected yet</h3>
+        <p>This site isn't wired up to a live Supabase project yet, so there's no account to show. The 7-day trial doesn't need an account — start it from the download page instead.</p>
+        <a class="btn btn-secondary" href="download.html">Go to Download</a>
+      </div>
+
+      <div id="js-loading" class="notice-panel">
+        <h3>Loading your account…</h3>
+      </div>
+
+      <div id="js-account-content" hidden>
+        <div class="dash-head">
+          <div>
+            <h1>Your account</h1>
+            <p id="js-user-line">&nbsp;</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="js-sign-out">Sign out</button>
+        </div>
+
+        <div class="dash-grid">
+          <div class="dash-card">
+            <h3>Profile</h3>
+            <p class="dash-card-sub">Your signed-in identity</p>
+            <div class="dash-row"><span class="label">Name</span><span class="value" id="js-profile-name">—</span></div>
+            <div class="dash-row"><span class="label">Email</span><span class="value" id="js-profile-email">—</span></div>
+          </div>
+
+          <div class="dash-card">
+            <h3>Subscription</h3>
+            <p class="dash-card-sub">Reflects your live entitlement</p>
+            <div id="js-billing-unavailable" class="notice-panel" hidden>
+              <p>Payments are currently being configured.</p>
+            </div>
+            <div id="js-billing-details" hidden>
+              <div class="dash-row"><span class="label">Plan</span><span class="value" id="js-plan">—</span></div>
+              <div class="dash-row"><span class="label">Status</span><span class="value" id="js-status">—</span></div>
+              <div class="dash-row"><span class="label">Current period</span><span class="value" id="js-period">—</span></div>
+              <div class="dash-row"><span class="label">Next billing date</span><span class="value" id="js-next-billing">—</span></div>
+              <div class="dash-row" id="js-cancel-row" hidden><span class="label">Cancel at period end</span><span class="value" id="js-cancel-at-end">—</span></div>
+            </div>
+          </div>
+
+          <div class="dash-card dash-full">
+            <h3>Manage</h3>
+            <div id="js-form-message" class="form-message form-message--error" role="alert" style="margin-top:16px;"></div>
+            <div class="dash-actions">
+              <a class="btn btn-primary" href="index.html#pricing">Upgrade / Change plan</a>
+              <button class="btn btn-secondary" id="js-cancel-sub" hidden>Cancel subscription</button>
+              <a class="btn btn-secondary" href="invoices.html">View invoices</a>
+              <a class="btn btn-secondary" href="orders.html">View orders</a>
+              <a class="btn btn-ghost" href="download.html">Download application</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var PLAN_LABELS = { free: "Free", starter: "Starter", pro: "Pro", business: "Business" };
+  var STATUS_LABELS = {
+    active: "Active",
+    trialing: "Trialing",
+    past_due: "Past due",
+    free: "Free (no subscription)",
+  };
+
+  function formatDate(iso) {
+    if (!iso) return "—";
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function statusBadgeClass(status) {
+    return "status-badge status-badge--" + (status || "free");
+  }
+
+  async function init() {
+    var notConfigured = document.getElementById("js-not-configured");
+    var loading = document.getElementById("js-loading");
+    var content = document.getElementById("js-account-content");
+
+    if (!window.SellerPilotAuth || !window.SellerPilotAuth.isConfigured()) {
+      loading.hidden = true;
+      notConfigured.hidden = false;
+      return;
+    }
+
+    var authState = await window.SellerPilotAuth.requireAuth();
+    if (!authState.session) return; // requireAuth already redirected to login
+
+    var session = authState.session;
+    var user = session.user;
+
+    loading.hidden = true;
+    content.hidden = false;
+
+    document.getElementById("js-user-line").textContent = "Signed in as " + (user.email || "");
+    document.getElementById("js-profile-name").textContent =
+      (user.user_metadata && user.user_metadata.full_name) || "—";
+    document.getElementById("js-profile-email").textContent = user.email || "—";
+
+    document.getElementById("js-sign-out").addEventListener("click", async function () {
+      await window.SellerPilotAuth.signOut();
+      window.location.href = "index.html";
+    });
+
+    await loadEntitlement();
+  }
+
+  async function loadEntitlement() {
+    var unavailable = document.getElementById("js-billing-unavailable");
+    var details = document.getElementById("js-billing-details");
+    var cancelBtn = document.getElementById("js-cancel-sub");
+
+    try {
+      var result = await window.SellerPilotAuth.callFunction("get-entitlement", { method: "GET" });
+      if (!result.ok || !result.data) {
+        unavailable.hidden = false;
+        details.hidden = true;
+        return;
+      }
+
+      var e = result.data;
+      details.hidden = false;
+      unavailable.hidden = true;
+
+      var planLabel = PLAN_LABELS[e.plan] || e.plan;
+      var statusLabel = STATUS_LABELS[e.status] || e.status;
+
+      document.getElementById("js-plan").textContent = planLabel;
+      document.getElementById("js-status").innerHTML =
+        '<span class="' + statusBadgeClass(e.status) + '">' + statusLabel + "</span>";
+
+      if (e.current_period_start && e.current_period_end) {
+        document.getElementById("js-period").textContent =
+          formatDate(e.current_period_start) + " – " + formatDate(e.current_period_end);
+        document.getElementById("js-next-billing").textContent = e.cancel_at_period_end
+          ? "Not renewing"
+          : formatDate(e.current_period_end);
+      } else {
+        document.getElementById("js-period").textContent = "—";
+        document.getElementById("js-next-billing").textContent = "—";
+      }
+
+      var cancelRow = document.getElementById("js-cancel-row");
+      if (typeof e.cancel_at_period_end === "boolean") {
+        cancelRow.hidden = false;
+        document.getElementById("js-cancel-at-end").textContent = e.cancel_at_period_end ? "Yes" : "No";
+      } else {
+        cancelRow.hidden = true;
+      }
+
+      // cancel-subscription only matches a subscriptions row whose status is
+      // exactly "active" — matching that here rather than "any paid status"
+      // avoids showing a button that would just 404 for trialing/past_due.
+      var canCancel = e.plan !== "free" && e.status === "active" && !e.cancel_at_period_end;
+      cancelBtn.hidden = !canCancel;
+    } catch (err) {
+      unavailable.hidden = false;
+      details.hidden = true;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var cancelBtn = document.getElementById("js-cancel-sub");
+    var messageEl = document.getElementById("js-form-message");
+
+    cancelBtn.addEventListener("click", async function () {
+      var confirmed = window.confirm(
+        "Cancel your subscription? You'll keep access until the end of the current billing period, then move to the Free plan."
+      );
+      if (!confirmed) return;
+
+      cancelBtn.disabled = true;
+      messageEl.classList.remove("is-visible");
+
+      try {
+        var result = await window.SellerPilotAuth.callFunction("cancel-subscription", { method: "POST" });
+        if (!result.ok) {
+          messageEl.textContent =
+            (result.data && result.data.error === "no_active_subscription")
+              ? "You don't have an active subscription to cancel."
+              : "Could not cancel your subscription. Try again later.";
+          messageEl.classList.add("is-visible");
+          cancelBtn.disabled = false;
+          return;
+        }
+        await loadEntitlement();
+      } catch (err) {
+        messageEl.textContent = "Could not cancel your subscription. Try again later.";
+        messageEl.classList.add("is-visible");
+        cancelBtn.disabled = false;
+      }
+    });
+
+    init();
+  });
+})();
+</script>
+</body>
+</html>
