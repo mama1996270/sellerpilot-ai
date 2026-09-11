@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Suggest a Feature — SellerPilot AI Pro</title>
+<meta name="description" content="Suggest a feature for SellerPilot AI Pro — tell us what would make your workflow better." />
+<link rel="canonical" href="https://mama1996270.github.io/sellerpilot-ai/support-feature-request.html" />
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+<link rel="stylesheet" href="assets/css/styles.css" />
+<link rel="stylesheet" href="assets/css/support.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="index.html">
+      <img src="assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links js-nav-panel" id="primary-navigation" aria-label="Primary">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#faq">FAQ</a>
+      <a href="account.html">Account</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-primary btn-sm" href="support.html">Support Center</a>
+      <button class="nav-toggle js-nav-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="primary-navigation">
+        <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="support-form-page">
+    <div class="container">
+      <p class="doc-updated"><a href="support.html">← Support Center</a></p>
+      <h1>Suggest a feature</h1>
+      <p class="doc-updated">Have an idea that would make SellerPilot AI Pro better? Tell us about it.</p>
+
+      <div class="auth-card">
+        <form id="js-feature-form" class="js-support-form" data-ticket-type="feature_request" novalidate>
+          <div class="js-form-message form-message form-message--error" role="alert"></div>
+
+          <div class="form-field">
+            <label for="name">Name <span style="color:var(--text-muted); font-weight:400;">(optional)</span></label>
+            <input type="text" id="name" name="name" autocomplete="name" />
+          </div>
+
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required />
+            <span class="field-hint">So we can follow up if we have questions.</span>
+          </div>
+
+          <div class="form-field">
+            <label for="subject">Feature idea</label>
+            <input type="text" id="subject" name="subject" placeholder="e.g. Bulk export directly to Shopify CSV" maxlength="200" required />
+          </div>
+
+          <div class="form-field">
+            <label for="message">Why would this help?</label>
+            <textarea id="message" name="message" placeholder="What are you trying to do today, and how would this feature change your workflow?" maxlength="5000" required></textarea>
+          </div>
+
+          <div class="form-field hp-field" aria-hidden="true">
+            <label for="hp-confirm">Leave this field empty</label>
+            <input type="text" id="hp-confirm" name="hp_confirm" class="js-hp-field" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-block js-submit" id="js-submit">
+              <span class="js-btn-label">Send</span>
+            </button>
+          </div>
+        </form>
+
+        <div class="js-form-success notice-panel" role="status" hidden>
+          <h3>Thanks for the idea.</h3>
+          <p>
+            Your ticket number is <span class="ticket-ref js-ticket-number"></span>. We read every suggestion —
+            if we have questions we'll follow up at the email you provided.
+          </p>
+          <a class="btn btn-secondary" href="support.html">Back to Support Center</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+      <span><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="refund.html">Refund Policy</a> · <a href="contact.html">Contact</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/support-form.js"></script>
+</body>
+</html>

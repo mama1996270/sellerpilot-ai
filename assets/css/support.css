@@ -1,0 +1,396 @@
+/* =========================================================================
+   Support Center — additive stylesheet, loaded only by support-*.html pages.
+   Composes the existing design tokens/classes from styles.css (var(--*),
+   .btn, .form-field, .form-message, .notice-panel, .auth-card, .doc-page,
+   .faq-item) rather than redefining them — styles.css itself is never
+   modified. Only genuinely new component classes live here.
+   ========================================================================= */
+
+/* ---- Wide-ish page shell for hub / FAQ / status pages (wider than
+   .doc-page's 760px is unnecessary here, so this just reuses .doc-page as-is
+   via markup — no override needed). Forms get their own, slightly wider
+   card than .auth-page's 440px, since a subject + message textarea needs
+   more room than an email/password pair. ---- */
+.support-form-page {
+  padding: clamp(48px, 6vw, 88px) 0 96px;
+}
+
+.support-form-page .container {
+  max-width: 620px;
+}
+
+.support-form-page h1 {
+  font-size: clamp(1.625rem, 1.35rem + 1vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.support-form-page .doc-updated {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+/* Same typography as .doc-page (contact.html etc.) for the plain-text
+   trailing content some support-*.html pages include below the form/card
+   (e.g. support-contact.html's "Looking for something else?" list). */
+.support-form-page h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+.support-form-page p,
+.support-form-page li {
+  color: var(--text-secondary);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.support-form-page ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding-left: 20px;
+  list-style: disc;
+}
+
+.support-form-page a {
+  color: var(--accent-hover);
+}
+
+.support-form-page a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Support Center hub — card grid linking to each sub-page ---- */
+.support-grid {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.support-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  background: var(--surface);
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.18s var(--ease);
+}
+
+.support-tile:hover {
+  border-color: var(--accent-border);
+  background: var(--surface-hover);
+  transform: translateY(-2px);
+}
+
+.support-tile .tile-icon {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-hover);
+}
+
+.support-tile .tile-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.support-tile h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.support-tile p {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+.support-tile .tile-link {
+  margin-top: 4px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--accent-hover);
+}
+
+/* ---- Textarea — styles.css only defines .form-field input[type=...], no
+   textarea rule exists yet; this extends the same visual language rather
+   than duplicating it. ---- */
+.form-field textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.55;
+  resize: vertical;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+}
+
+.form-field textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.form-field textarea:hover {
+  border-color: var(--border-strong);
+}
+
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  background: var(--surface);
+}
+
+/* ---- Honeypot field — visually and semantically hidden from real users
+   (off-screen, not display:none/visibility:hidden, which some spam bots
+   already know to skip) while staying in the tab/DOM flow for bots that
+   fill every field programmatically. Real users never see or reach it. ---- */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---- Ticket reference shown after a (placeholder) submission ---- */
+.ticket-ref {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-border);
+  color: var(--accent-hover);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}
+
+/* ---- Service status list ---- */
+.status-summary {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: var(--radius-lg);
+  padding: 18px 22px;
+  background: var(--success-soft);
+}
+
+.status-summary .status-dot {
+  width: 12px;
+  height: 12px;
+}
+
+.status-summary strong {
+  color: var(--text-primary);
+  font-size: 15px;
+}
+
+.status-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 22px;
+  background: var(--surface);
+}
+
+.status-item .status-name {
+  color: var(--text-primary);
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.status-item .status-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.status-dot.is-ok {
+  background: var(--success);
+  box-shadow: 0 0 0 3px var(--success-soft);
+}
+
+.status-dot.is-degraded {
+  background: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-soft);
+}
+
+.status-dot.is-down {
+  background: #f0576b;
+  box-shadow: 0 0 0 3px rgba(240, 87, 107, 0.14);
+}
+
+.status-note {
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+/* =========================================================================
+   Admin dashboard (admin/tickets.html) — private, unlinked page. Reuses the
+   same tokens/patterns as the rest of the Support Center rather than
+   introducing a parallel visual language.
+   ========================================================================= */
+
+.admin-page {
+  padding: clamp(32px, 5vw, 56px) 0 96px;
+}
+
+.admin-page .container {
+  max-width: 960px;
+}
+
+.admin-page h1 {
+  font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.875rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.admin-toolbar {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.admin-toolbar .field-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-toolbar label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.admin-select {
+  height: 38px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+}
+
+.admin-select:focus {
+  outline: none;
+  border-color: var(--accent-border);
+}
+
+.ticket-table-wrap {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: auto;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.ticket-table th,
+.ticket-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.ticket-table td.ticket-subject-cell,
+.ticket-table td.ticket-message-cell {
+  white-space: normal;
+  max-width: 320px;
+}
+
+.ticket-table th {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.ticket-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ticket-table tbody tr:hover {
+  background: var(--surface-hover);
+}
+
+.ticket-number-cell {
+  font-family: var(--font-mono);
+  color: var(--accent-hover);
+}
+
+.ticket-type-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 600;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+.admin-empty,
+.admin-loading {
+  margin-top: 20px;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-lg);
+}

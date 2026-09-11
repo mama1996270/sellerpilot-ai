@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Support Tickets — Admin</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#08090d" />
+<link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+<link rel="stylesheet" href="../assets/css/styles.css" />
+<link rel="stylesheet" href="../assets/css/support.css" />
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a class="brand" href="../index.html">
+      <img src="../assets/img/favicon.svg" alt="" width="28" height="28" />
+      <span>SellerPilot <span style="color:var(--accent-hover)">AI Pro</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="../support.html">Support Center</a>
+      <a href="../account.html">Account</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="admin-page">
+    <div class="container">
+      <h1>Support tickets</h1>
+      <p class="doc-updated">Private admin dashboard — not linked from the site, not indexed.</p>
+
+      <div id="js-signin-required" class="notice-panel is-warning" hidden>
+        <h3>Sign in required</h3>
+        <p>You need to sign in with an admin account to view support tickets.</p>
+        <a class="btn btn-primary" id="js-signin-link" href="../login.html">Sign in</a>
+      </div>
+
+      <div id="js-forbidden" class="notice-panel is-warning" hidden>
+        <h3>Not authorized</h3>
+        <p>Your account is signed in but isn't on the admin allowlist for the Support Center.</p>
+      </div>
+
+      <div id="js-load-error" class="notice-panel is-warning" hidden>
+        <h3>Couldn't load tickets</h3>
+        <p class="js-load-error-message">Something went wrong. Try refreshing.</p>
+        <button type="button" class="btn btn-secondary js-retry">Try again</button>
+      </div>
+
+      <div id="js-dashboard" hidden>
+        <div class="admin-toolbar">
+          <div class="field-group">
+            <label for="status-filter">Status</label>
+            <select id="status-filter" class="admin-select">
+              <option value="">All</option>
+              <option value="open">Open</option>
+              <option value="in_progress">In progress</option>
+              <option value="resolved">Resolved</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm js-refresh">Refresh</button>
+        </div>
+
+        <div id="js-empty" class="admin-empty" hidden>No tickets match this filter.</div>
+
+        <div class="ticket-table-wrap">
+          <table class="ticket-table">
+            <thead>
+              <tr>
+                <th>Ticket</th>
+                <th>Type</th>
+                <th>Subject / message</th>
+                <th>From</th>
+                <th>Received</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="js-ticket-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© <span class="js-current-year">2026</span> SellerPilot AI Pro. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+<script src="../assets/js/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="../assets/js/auth.js"></script>
+<script src="tickets.js"></script>
+</body>
+</html>
