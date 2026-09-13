@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Complete user guide for SellerPilot AI Pro. Learn how to install, configure, and use the application.">
+    <title>User Guide | SellerPilot AI Pro</title>
+
+    <style>
+        :root {
+            --background: #07111d;
+            --surface: #0d1b2a;
+            --surface-light: #12263a;
+            --surface-hover: #17334b;
+            --border: rgba(128, 150, 170, 0.35);
+            --text: #f4f7fb;
+            --muted: #a9bacb;
+            --primary: #36a9e1;
+            --primary-dark: #2187bd;
+            --success: #42d392;
+            --warning: #f2bd64;
+            --danger: #ef767a;
+            --shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .guide-page {
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 32px 0 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            padding: 10px 18px;
+            border: 1px solid rgba(128, 150, 170, 0.35);
+            border-radius: 10px;
+            color: #dcecff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(54, 169, 225, 0.12);
+            border-color: rgba(54, 169, 225, 0.7);
+        }
+
+        .guide-hero {
+            padding: 64px 30px;
+            margin-bottom: 42px;
+            border: 1px solid rgba(54, 169, 225, 0.18);
+            border-radius: 30px;
+            background:
+                linear-gradient(135deg, rgba(13, 39, 61, 0.98), rgba(10, 47, 70, 0.95));
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .guide-hero h1 {
+            margin: 0 0 18px;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .guide-hero p {
+            max-width: 760px;
+            margin: 0 auto;
+            color: #d5e7f5;
+            font-size: 1.12rem;
+        }
+
+        .guide-layout {
+            display: grid;
+            grid-template-columns: 270px minmax(0, 1fr);
+            gap: 34px;
+            align-items: start;
+        }
+
+        .guide-sidebar {
+            position: sticky;
+            top: 24px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: rgba(13, 27, 42, 0.9);
+        }
+
+        .guide-sidebar h2 {
+            margin: 0 0 18px;
+            font-size: 1.15rem;
+        }
+
+        .guide-sidebar a {
+            display: block;
+            padding: 9px 0;
+            color: var(--muted);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(128, 150, 170, 0.12);
+            transition: color 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .guide-sidebar a:last-child {
+            border-bottom: none;
+        }
+
+        .guide-sidebar a:hover {
+            padding-left: 5px;
+            color: var(--primary);
+        }
+
+        .guide-content {
+            min-width: 0;
+        }
+
+        .guide-section {
+            margin-bottom: 38px;
+            padding: 30px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+        }
+
+        .guide-section h2 {
+            margin: 0 0 18px;
+            color: #ffffff;
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+
+        .guide-section h3 {
+            margin: 28px 0 10px;
+            color: #d9efff;
+            font-size: 1.2rem;
+        }
+
+        .guide-section p {
+            margin: 0 0 15px;
+            color: var(--muted);
+        }
+
+        .guide-section ul,
+        .guide-section ol {
+            margin: 12px 0 18px;
+            padding-left: 24px;
+            color: var(--muted);
+        }
+
+        .guide-section li {
+            margin-bottom: 8px;
+        }
+
+        .notice {
+            margin: 22px 0;
+            padding: 18px 20px;
+            border-left: 4px solid var(--primary);
+            border-radius: 10px;
+            background: rgba(54, 169, 225, 0.1);
+            color: #d8edf9;
+        }
+
+        .notice strong {
+            color: #ffffff;
+        }
+
+        .notice.success {
+            border-left-color: var(--success);
+            background: rgba(66, 211, 146, 0.1);
+        }
+
+        .notice.warning {
+            border-left-color: var(--warning);
+            background: rgba(242, 100, 100, 0);
+        }
+
+        .step-list {
+            counter-reset: guide-step;
+            list-style: none;
+            padding: 0 !important;
+        }
+
+        .step-list li {
+            position: relative;
+            min-height: 42px;
+            margin-bottom: 16px;
+            padding-left: 52px;
+        }
+
+        .step-list li::before {
+            counter-increment: guide-step;
+            content: counter(guide-step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #06111b;
+            font-weight: 700;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            padding: 20px;
+            border: 1px solid rgba(128, 150, 170, 0.25);
+            border-radius: 14px;
+            background: var(--surface-light);
+        }
+
+        .feature-card h3 {
+            margin: 0 0 8px;
+            color: #ffffff;
+            font-size: 1.05rem;
+        }
+
+        .feature-card p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .code-box {
+            overflow-x: auto;
+            margin: 18px 0;
+            padding: 18px;
+            border: 1px solid rgba(128, 150, 170, 0.25);
+            border-radius: 12px;
+            background: #050b12;
+            color: #d9f1ff;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            min-width: 520px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 13px 15px;
+            border: 1px solid rgba(128, 150, 170, 0.25);
+            text-align: left;
+        }
+
+        th {
+            background: var(--surface-light);
+            color: #ffffff;
+        }
+
+        td {
+            color: var(--muted);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(54, 169, 225, 0.15);
+            color: #8bd5ff;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .guide-footer {
+            margin-top: 44px;
+            padding: 34px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: var(--surface);
+            text-align: center;
+        }
+
+        .guide-footer p {
+            margin: 0 0 20px;
+            color: var(--muted);
+        }
+
+        .guide-button {
+            display: inline-block;
+            margin: 6px;
+            padding: 12px 22px;
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            background: var(--primary);
+            color: #06111b;
+            text-decoration: none;
+            font-weight: 700;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .guide-button:hover {
+            background: #65c5f1;
+            transform: translateY(-2px);
+        }
+
+        .guide-button.secondary {
+            border-color: rgba(128, 150, 170, 0.45);
+            background: transparent;
+            color: #dcecff;
+        }
+
+        .guide-button.secondary:hover {
+            background: rgba(128, 150, 170, 0.12);
+        }
+
+        .small-text {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        @media (max-width: 850px) {
+            .guide-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-sidebar {
+                position: static;
+            }
+
+            .guide-sidebar a {
+                display: inline-block;
+                margin-right: 18px;
+                border-bottom: none;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .guide-page {
+                width: min(100% - 20px, 1180px);
+                padding-top: 20px;
+            }
+
+            .guide-hero {
+                padding: 42px 20px;
+                border-radius: 22px;
+            }
+
+            .guide-section {
+                padding: 22px 18px;
+                border-radius: 16px;
+            }
+
+            .guide-section h2 {
+                font-size: 1.45rem;
+            }
+
+            .guide-sidebar {
+                padding: 18px;
+            }
+
+            .guide-sidebar a {
+                display: block;
+                margin-right: 0;
+                padding: 7px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="guide-page">
+
+        <a class="back-link" href="index.html">
+            ← Back to Website
+        </a>
+
+        <section class="guide-hero">
+            <h1>SellerPilot AI Pro User Guide</h1>
+            <p>
+                Learn how to install, configure, and use SellerPilot AI Pro
+                to create and manage product listings more efficiently.
+            </p>
+        </section>
+
+        <div class="guide-layout">
+
+            <aside class="guide-sidebar">
+                <h2>Guide Contents</h2>
+
+                <a href="#introduction">Introduction</a>
+                <a href="#installation">Installation</a>
+                <a href="#getting-started">Getting Started</a>
+                <a href="#generator">Generator</a>
+                <a href="#bulk-generator">Bulk Generator</a>
+                <a href="#publishing-center">Publishing Center</a>
+                <a href="#files-results">Files and Results</a>
+                <a href="#subscription">Subscription</a>
+                <a href="#troubleshooting">Troubleshooting</a>
+                <a href="#faq">Frequently Asked Questions</a>
+                <a href="#support">Support</a>
+            </aside>
+
+            <article class="guide-content">
+
+                <section class="guide-section" id="introduction">
+                    <h2>1. Introduction</h2>
+
+                    <p>
+                        SellerPilot AI Pro is an AI-powered listing assistant
+                        designed to help online sellers create, organize,
+                        and prepare product listings more efficiently.
+                    </p>
+
+                    <p>
+                        The application can assist with product titles,
+                        descriptions, keywords, and listing preparation.
+                        It helps reduce repetitive work and gives sellers
+                        more time to focus on their business.
+                    </p>
+
+                    <div class="notice">
+                        <strong>Important:</strong>
+                        SellerPilot AI Pro does not replace your marketplace
+                        account. You must still follow the rules and requirements
+                        of the platform where you publish your products.
+                    </div>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>AI-Powered Content</h3>
+                            <p>
+                                Generate product titles, descriptions,
+                                and keywords with an AI provider.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>Single Product Generation</h3>
+                            <p>
+                                Prepare content for one product at a time
+                                using the Generator.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>Bulk Processing</h3>
+                            <p>
+                                Process multiple products from an image folder
+                                or imported product list.
+                            </p>
+                        </div>
+
+                        <div class="feature-card">
+                            <h3>Organized Results</h3>
+                            <p>
+                                Save and export generated results for later use.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="guide-section" id="installation">
+                    <h2>2. Installation</h2>
+
+                    <p>
+                        Follow these steps to install SellerPilot AI Pro
+                        on your Windows computer.
+                    </p>
+
+                    <ol class="step-list">
+                        <li>
+                            Download the latest installer from the official
+                            SellerPilot AI Pro website.
+                        </li>
+
+                        <li>
+                            Open the downloaded
+                            <span class="tag">.exe</span>
+                            installer file.
+                        </li>
+
+                        <li>
+                            Follow the instructions shown by the installation wizard.
+                        </li>
+
+                        <li>
+                            Choose the installation location if the installer
+                            asks you to select one.
+                        </li>
+
+                        <li>
+                            Wait until the installation is completed.
+                        </li>
+
+                        <li>
+                            Launch SellerPilot AI Pro from the Start Menu
+                            or desktop shortcut.
+                        </li>
+                    </ol>
+
+                    <div class="notice warning">
+                        <strong>Windows warning:</strong>
+                        If Windows displays a security warning, make sure that
+                        you downloaded the installer from the official website
+                        before continuing.
+                    </div>
+                </section>
+
+                <section class="guide-section" id="getting-started">
+                    <h2>3. Getting Started</h2>
+
+                    <h3>First launch</h3>
+
+                    <p>
+                        When you open the application for the first time,
+                        review the available settings and connect the AI provider
+                        you want to use.
+                    </p>
+
+                    <h3>Basic workflow</h3>
+
+                    <ol class="step-list">
+                        <li>Open SellerPilot AI Pro.</li>
+                        <li>Choose the appropriate tool or page.</li>
+                        <li>Import an image or enter product information.</li>
+                        <li>Configure the generation settings.</li>
+                        <li>Start the generation process.</li>
+                        <li>Review and export the generated results.</li>
+                    </ol>
+
+                    <h3>Recommended preparation</h3>
+
+                    <ul>
+                        <li>Use clear and high-quality product images.</li>
+                        <li>Give your products descriptive names.</li>
+                        <li>Organize images into clearly named folders.</li>
+                        <li>Review generated content before publishing.</li>
+                        <li>Keep your marketplace requirements in mind.</li>
+                    </ul>
+                </section>
+
+                <section class="guide-section" id="generator">
+                    <h2>4. Generator</h2>
+
+                    <p>
+                        The Generator is designed for preparing content
+                        for one product at a time.
+                    </p>
+
+                    <h3>How to use the Generator</h3>
+
+                    <ol class="step-list">
+                        <li>Open the Generator page.</li>
+                        <li>Enter the product title or a short product idea.</li>
+                        <li>Enter additional information when available.</li>
+                        <li>Choose or upload the product image if supported.</li>
+                        <li>Review the selected AI provider and model.</li>
+                        <li>Click the generation button.</li>
+                        <li>Wait for the generated content to appear.</li>
+                        <li>Review, edit, and save the results.</li>
+                    </ol>
+
+                    <h3>Generated content</h3>
+
+                    <p>
+                        Depending on your configuration, the Generator may
+                        produce the following information:
+                    </p>
+
+                    <ul>
+                        <li>Product title</li>
+                        <li>Product description</li>
+                        <li>Keywords or tags</li>
+                        <li>Additional listing information</li>
+                    </ul>
+
+                    <div class="notice">
+                        <strong>Review before publishing:</strong>
+                        AI-generated content should always be checked for accuracy,
+                        spelling, product details, and marketplace policies.
+                    </div>
+                </section>
+
+                <section class="guide-section" id="bulk-generator">
+                    <h2>5. Bulk Generator</h2>
+
+                    <p>
+                        The Bulk Generator allows you to process multiple products
+                        in one workflow. It is useful when you have a large number
+                        of product images or listing ideas.
+                    </p>
+
+                    <h3>Importing an image folder</h3>
+
+                    <ol class="step-list">
+                        <li>Open the Bulk Generator page.</li>
+                        <li>Click the image folder import option.</li>
+                        <li>Select the folder containing your product images.</li>
+                        <li>Wait while the application scans the folder.</li>
+                        <li>Review the products added to the queue.</li>
+                    </ol>
+
+                    <p>
+                        Supported image formats may include:
+                    </p>
+
+                    <div class="code-box">JPG
+JPEG
+PNG
+WEBP
+BMP
+TIF
+TIFF</div>
+
+                    <h3>Starting a bulk generation</h3>
+
+                    <ol class="step-list">
+                        <li>Confirm that the correct products are in the queue.</li>
+                        <li>Review the selected AI provider and settings.</li>
+                        <li>Click Generate All or the equivalent generation button.</li>
+                        <li>Wait while the products are processed.</li>
+                        <li>Review the status of each product.</li>
+                        <li>Open the results after the process is completed.</li>
+                    </ol>
+
+                    <h3>Processing status</h3>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Meaning</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Pending</td>
+                                    <td>The product is waiting in the queue.</td>
+                                </tr>
+                                <tr>
+                                    <td>Running</td>
+                                    <td>The product is currently being processed.</td>
+                                </tr>
+                                <tr>
+                                    <td>Completed</td>
+                                    <td>The product was generated successfully.</td>
+                                </tr>
+                                <tr>
+                                    <td>Failed</td>
+                                    <td>An error occurred during processing.</td>
+                                </tr>
+                                <tr>
+                                    <td>Cancelled</td>
+                                    <td>The process was cancelled before completion.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="guide-section" id="publishing-center">
+                    <h2>6. Publishing Center</h2>
+
+                    <p>
+                        The Publishing Center is intended to help you organize
+                        and prepare your product listing information before
+                        publishing it on an ecommerce marketplace.
+                    </p>
+
+                    <h3>Recommended workflow</h3>
+
+                    <ol class="step-list">
+                        <li>Open the Publishing Center.</li>
+                        <li>Select the product or generated result.</li>
+                        <li>Review the title and description.</li>
+                        <li>Review the keywords and tags.</li>
+                        <li>Make any necessary changes.</li>
+                        <li>Copy or export the information.</li>
+                        <li>Publish the product through your marketplace account.</li>
+                    </ol>
+
+                    <div class="notice warning">
+                        <strong>Important:</strong>
+                        SellerPilot AI Pro prepares listing content.
+                        You remain responsible for publishing the product
+                        and complying with marketplace rules.
+                    </div>
+                </section>
+
+                <section class="guide-section" id="files-results">
+                    <h2>7. Files and Results</h2>
+
+                    <p>
+                        Generated results can be reviewed inside the application
+                        and exported for later use.
+                    </p>
+
+                    <h3>Recommended file organization</h3>
+
+                    <div class="code-box">Project Folder
+│
+├── Original
+│   └── Original product images
+│
+├── Output
+│   └── Generated images or listing files
+│
+├── Mockups
+│   └── Product mockups
+│
+└── Exports
+    └── Generated CSV and JSON results</div>
+
+                    <h3>Exported results</h3>
+
+                    <p>
+                        Exported results may be available in CSV and JSON formats.
+                        These files can be opened with spreadsheet software
+                        or a text editor.
+                    </p>
+
+                    <ul>
+                        <li>CSV files are useful for spreadsheets and bulk editing.</li>
+                        <li>JSON files are useful for structured data and backups.</li>
+                        <li>Keep a backup of important generated results.</li>
+                    </ul>
+                </section>
+
+                <section class="guide-section" id="subscription">
+                    <h2>8. Subscription and Account</h2>
+
+                    <p>
+                        Some features of SellerPilot AI Pro may require an active
+                        subscription or a valid account.
+                    </p>
+
+                    <h3>Account workflow</h3>
+
+                    <ol class="step-list">
+                        <li>Create an account on the official website.</li>
+                        <li>Sign in using your account credentials.</li>
+                        <li>Choose an available subscription plan.</li>
+                        <li>Complete the payment process if required.</li>
+                        <li>Open the application and sign in when requested.</li>
+                    </ol>
+
+                    <h3>Payment and subscription questions</h3>
+
+                    <p>
+                        For questions about payments, invoices, refunds,
+                        subscription status, or account access, use the
+                        official Support Center.
+                    </p>
+
+                    <div class="notice">
+                        <strong>Security reminder:</strong>
+                        Never share your password, API key, payment details,
+                        or private account information with anyone.
+                    </div>
+                </section>
+
+                <section class="guide-section" id="troubleshooting">
+                    <h2>9. Troubleshooting</h2>
+
+                    <h3>The application does not open</h3>
+
+                    <ul>
+                        <li>Restart your computer.</li>
+                        <li>Try opening the application again.</li>
+                        <li>Check whether your antivirus blocked the application.</li>
+                        <li>Reinstall the latest official version if necessary.</li>
+                    </ul>
+
+                    <h3>Generation fails</h3>
+
+                    <ul>
+                        <li>Check your internet connection.</li>
+                        <li>Verify that the AI provider is configured correctly.</li>
+                        <li>Check that your API key is valid if one is required.</li>
+                        <li>Confirm that the selected model is available.</li>
+                        <li>Try generating one product before using bulk processing.</li>
+                    </ul>
+
+                    <h3>Images are not imported</h3>
+
+                    <ul>
+                        <li>Confirm that the files are supported image formats.</li>
+                        <li>Check that the image files are not corrupted.</li>
+                        <li>Use a folder containing only product images.</li>
+                        <li>Try importing a smaller folder first.</li>
+                    </ul>
+
+                    <h3>Some products fail during bulk processing</h3>
+
+                    <ul>
+                        <li>Review the failed product information.</li>
+                        <li>Check the product image and file name.</li>
+                        <li>Check the AI provider connection.</li>
+                        <li>Retry the failed products individually.</li>
+                    </ul>
+                </section>
+
+                <section class="guide-section" id="faq">
+                    <h2>10. Frequently Asked Questions</h2>
+
+                    <h3>Does SellerPilot AI Pro publish products automatically?</h3>
+                    <p>
+                        SellerPilot AI Pro helps prepare and organize listing content.
+                        Publishing depends on the supported workflow and your
+                        marketplace account.
+                    </p>
+
+                    <h3>Can I use my own AI API key?</h3>
+                    <p>
+                        If the selected provider supports API keys, configure
+                        the key through the application's AI settings.
+                    </p>
+
+                    <h3>Can I process many images?</h3>
+                    <p>
+                        Yes. The Bulk Generator is designed to process multiple
+                        product images through a queue.
+                    </p>
+
+                    <h3>Should I publish AI-generated content without reviewing it?</h3>
+                    <p>
+                        No. Always review titles, descriptions, keywords,
+                        product specifications, and marketplace requirements
+                        before publishing.
+                    </p>
+
+                    <h3>Where can I request help?</h3>
+                    <p>
+                        You can contact the SellerPilot AI Pro support team
+                        through the official Support Center.
+                    </p>
+                </section>
+
+                <section class="guide-section" id="support">
+                    <h2>11. Support</h2>
+
+                    <p>
+                        If you need assistance, visit the Support Center
+                        and choose the appropriate support option.
+                    </p>
+
+                    <ul>
+                        <li>General support</li>
+                        <li>Technical problems</li>
+                        <li>Payment or subscription questions</li>
+                        <li>Feature requests</li>
+                        <li>Bug reports</li>
+                    </ul>
+
+                    <div class="notice success">
+                        <strong>When contacting support, include:</strong>
+                        your account email, application version, a clear
+                        description of the problem, and screenshots when possible.
+                        Never include passwords or private API keys.
+                    </div>
+                </section>
+
+            </article>
+        </div>
+
+        <div class="guide-footer">
+            <p>Need more help with SellerPilot AI Pro?</p>
+
+            <a class="guide-button" href="support.html">
+                Contact Support
+            </a>
+
+            <a class="guide-button secondary" href="index.html">
+                Back to Website
+            </a>
+        </div>
+
+    </main>
+</body>
+</html>
